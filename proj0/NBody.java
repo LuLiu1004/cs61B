@@ -5,7 +5,7 @@ import java.util.Scanner;
  * simulate a universe specified in one of the data files
  */
 public class NBody {
-    public Scanner in;
+    private Scanner in;
 
     public static double readRadius(String dataFile){
         /* Start reading in dataFile.txt */
