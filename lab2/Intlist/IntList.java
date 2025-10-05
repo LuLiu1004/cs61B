@@ -114,7 +114,8 @@ public class IntList {
         // copy the remaining elements to the new list
         while (ptr !=null){
             curr.rest = new IntList(ptr.first,null);
-            curr = curr.rest;
+            curr=curr.rest;
+            ptr = ptr.rest;
 
         }
         // attach B to the list
