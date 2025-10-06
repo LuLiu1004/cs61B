@@ -132,7 +132,20 @@ public class IntList {
      * This method is destructive. If given null as an input, returns null.
      */
     public static IntList reverse(IntList inputList){
-        return null;
+        if(inputList==null) return null;
+
+        IntList prev = null;
+        IntList curr = inputList;
+        IntList next;
+        while(curr!=null){
+            next = curr.rest; // temporarily store the next node
+            curr.rest = prev;// reverse the link
+            prev = curr;// move prev one step forward ;
+            curr = next;
+        }
+        // now prev points to the new head ( the old tail)
+
+        return prev;
     }
 
 
