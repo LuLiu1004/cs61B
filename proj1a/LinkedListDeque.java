@@ -130,7 +130,7 @@ public class LinkedListDeque<T> {
         }
         return ptr.item;
     }
-    private T getRecursive(int index) {
+    public T getRecursive(int index) {
         if (isEmpty() || index >= size) {
             return null;
         }
