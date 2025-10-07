@@ -1,40 +1,40 @@
-public class ArrayDeque <T>{
+public class ArrayDeque<T> {
 
     private T[] items;
     private int size;
     private int nextFirst; // always point to the slot before the first actual item
     private int nextLast;
-    private static final int INITIAL_CAPACITY =8 ;
+    private static final int INITIAL_CAPACITY = 8;
     private static final double  DEFAULT_FACTOR = 0.25;
 
 
-    public ArrayDeque(){
+    public ArrayDeque() {
         items = (T[]) new Object[INITIAL_CAPACITY];
-        size =0;
-        nextFirst=0;
-        nextLast=1;
+        size = 0;
+        nextFirst = 0;
+        nextLast = 1;
 
     }
     /*
     Move the current index one step forward in the array.
      */
-    private int plusOne(int index){
-        return (index+1)%items.length;
+    private int plusOne(int index) {
+        return (index + 1) % items.length;
     }
     /*
     Move the current index one step backward in the array.
      */
-    private int minusOne(int index){
-        return (index -1 + items.length)%items.length;
+    private int minusOne(int index) {
+        return (index - 1 + items.length) % items.length;
     }
 
-    private void resize(int newCapacity){
+    private void resize(int newCapacity) {
         T[] newItems = (T[]) new Object[newCapacity];
         // get the first index by move the nextFirst one step forward
         int firstIdx = plusOne(nextFirst);
         // copy the old circular array to the new linear array
-        for (int i=0; i<size;i++){
-            newItems[i]=items[(firstIdx+i)%items.length];
+        for (int i = 0; i < size; i++) {
+            newItems[i] = items[(firstIdx + i) % items.length];
         }
         // reset the array
         items = newItems;
@@ -54,14 +54,15 @@ public class ArrayDeque <T>{
      * Adds an item of type T to the front of the deque.
      * @param item the value of the newly added node
      */
-    public void addFirst(T item){
+    public void addFirst(T item) {
+        // check if the array is full
+        if (size == items.length) {
+            resize(items.length * 2);
+        }
 
-
-       items[nextFirst]=item;
-       nextFirst = minusOne(nextFirst);
-       size ++;
-
-       expandArrayByHalf();
+        items[nextFirst] = item;
+        nextFirst = minusOne(nextFirst);
+        size++;
 
 
     }
@@ -70,10 +71,14 @@ public class ArrayDeque <T>{
      * Adds an item of type T to the back of the deque.
      * @param item the value of the newly added node
      */
-    public void addLast(T item){
+    public void addLast(T item) {
+        // check if the array is full
+        if (size == items.length) {
+            resize(items.length * 2);
+        }
         items[nextLast] = item;
         nextLast = plusOne(nextLast);
-        size ++;
+        size++;
 
 
     }
@@ -82,54 +87,54 @@ public class ArrayDeque <T>{
      * Verify if the deque is empty.
      * @return true if deque is empty, false otherwise.
      */
-    public boolean isEmpty(){
+    public boolean isEmpty() {
 
-        return size==0;
+        return size == 0;
     }
 
     /**
      * Returns the number of items in the deque.
      * @return the number of items in the deque.
      */
-    public int size(){
+    public int size() {
         return this.size;
     }
 
     /**
      * Prints the items in the deque from first to last, separated by a space.
      */
-    public void printDeque(){
+    public void printDeque() {
 
         int firstIdx = plusOne(nextFirst);
-        for(int i=0; i<size;i++){
-            System.out.println(items[(firstIdx+i)% items.length]);
+        for (int i = 0; i < size; i++) {
+            System.out.print(items[(firstIdx + i) % items.length] + " ");
         }
         System.out.println();
 
     }
-    private void shrinkArrayByHalf(){
-        if(items.length>=16 && size/(double)items.length<DEFAULT_FACTOR){
+    private void shrinkArrayByHalf() {
+        if (items.length >= INITIAL_CAPACITY * 2 && size / (double) items.length < DEFAULT_FACTOR) {
             //shrink the array
-            resize(items.length/2);
+            resize(items.length / 2);
         }
-    }
-    private void expandArrayByHalf(){
-        if(size == items.length){resize(items.length*2);}
     }
 
     /**
      * Removes and returns the item at the front of the deque. If no such item exists, returns null.
      * @return the removed item or null if no such item exists.
      */
-    public T removeFirst(){
+    public T removeFirst() {
 
-        if(isEmpty()) return null;
+        if (isEmpty()) {
+            return null;
+        }
+
         int firstIdx = plusOne(nextFirst);
         T removedItem = items[firstIdx];
         // null the removed item
         items[firstIdx] = null;
         nextFirst = firstIdx;
-        size --;
+        size--;
         shrinkArrayByHalf();
         return removedItem;
     }
@@ -138,14 +143,16 @@ public class ArrayDeque <T>{
      * Removes and returns the item at the back of the deque. If no such item exists, returns null.
      * @return the removed item or null if no such item exists.
      */
-    public T removeLast(){
-        if(isEmpty()) return null;
+    public T removeLast() {
+        if (isEmpty()) {
+            return null;
+        }
         int lastIdx = minusOne(nextLast);
         T removedItem = items[lastIdx];
         // free the removed item from the array
         items[lastIdx] = null;
         nextLast = lastIdx;
-        size --;
+        size--;
         // check if the array
         shrinkArrayByHalf();
         return removedItem;
@@ -159,21 +166,27 @@ public class ArrayDeque <T>{
      * @return
      */
 
-    public T get(int index){
+    public T get(int index) {
 
-        if (isEmpty()|| index >= size) return null;
-        int firstIdx = minusOne(nextFirst);
-        int returnedIdx = (firstIdx+index)% items.length;
+        if (isEmpty() || index >= size) {
+            return null;
+        }
+        int firstIdx = plusOne(nextFirst);
+        int returnedIdx = (firstIdx + index) % items.length;
         return items[returnedIdx];
     }
-    public T getRecursive(int index){
-        if (isEmpty()|| index >= size) return null;
-        return getRecursiveHelper(index,plusOne(nextFirst));
+    private T getRecursive(int index) {
+        if (isEmpty() || index >= size) {
+            return null;
+        }
+        return getRecursiveHelper(index, plusOne(nextFirst));
     }
 
-    private T getRecursiveHelper(int targetIdx, int currIdx){
-        if(targetIdx ==0) return items[targetIdx];
-        return getRecursiveHelper(targetIdx-1,plusOne(currIdx));
+    private T getRecursiveHelper(int targetIdx, int currIdx) {
+        if (targetIdx == 0) {
+            return items[currIdx];
+        }
+        return getRecursiveHelper(targetIdx - 1, plusOne(currIdx));
 
     }
 }
