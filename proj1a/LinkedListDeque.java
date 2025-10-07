@@ -71,7 +71,7 @@ public class LinkedListDeque<T> {
 
         StuffNode ptr = sentinel.next;
         while (ptr != sentinel) {
-            System.out.println(ptr.item + " ");
+            System.out.print(ptr.item + " ");
             ptr = ptr.next;
         }
         System.out.println();
@@ -114,8 +114,8 @@ public class LinkedListDeque<T> {
      * Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
      * If no such item exists, returns null.
      * NOTE:Must not alter the deque!
-     * @param index
-     * @return
+     * @param index the targeted index
+     * @return the item of the given index
      */
 
     public T get(int index) {
