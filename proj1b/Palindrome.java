@@ -47,10 +47,10 @@ public class Palindrome {
 
 
         Deque<Character> wordDeque = wordToDeque(word);
-        int numOfIterations = wordDeque.size() / 2;
-        for (int i = 0; i < numOfIterations; i++) {
-            Character firstChar = wordDeque.removeFirst();
-            Character lastChar = wordDeque.removeLast();
+
+        while (wordDeque.size() > 1) {
+            char firstChar = wordDeque.removeFirst();
+            char lastChar = wordDeque.removeLast();
             if (!cc.equalChars(firstChar, lastChar)) {
                 return false;
             }
