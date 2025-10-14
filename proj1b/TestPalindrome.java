@@ -16,7 +16,7 @@ public class TestPalindrome {
         assertEquals("persiflage", actual);
     }
     @Test
-    public void testIsPalindrome() {
+    public void testPalindrome() {
         // normal cases
         assertTrue(palindrome.isPalindrome("noon"));
         assertTrue(palindrome.isPalindrome("racecar"));
