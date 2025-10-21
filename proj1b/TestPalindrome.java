@@ -16,29 +16,35 @@ public class TestPalindrome {
         assertEquals("persiflage", actual);
     }
     @Test
-    public void testPalindrome() {
+    public void testIsPalindrome() {
         // normal cases
         assertTrue(palindrome.isPalindrome("noon"));
         assertTrue(palindrome.isPalindrome("racecar"));
         assertFalse(palindrome.isPalindrome("cat"));
         // corner cases
-        assertTrue(palindrome.isPalindrome("a"));
+        assertTrue(palindrome.isPalindrome(String.valueOf('a')));
         assertFalse(palindrome.isPalindrome("aA"));
         assertTrue(palindrome.isPalindrome(null));
         assertTrue(palindrome.isPalindrome(""));
 
+    }
+    @Test
+    public void testIsPalindromeOffByOne() {
         // test isPalindrome with CharacterComparator offByOne
         CharacterComparator ob1 = new OffByOne();
         assertTrue(palindrome.isPalindrome("flake", ob1));
-        assertTrue(palindrome.isPalindrome("",ob1));
-        assertFalse(palindrome.isPalindrome("aba",ob1));
-        assertFalse(palindrome.isPalindrome("aa",ob1));
+        assertTrue(palindrome.isPalindrome("", ob1));
+        assertFalse(palindrome.isPalindrome("aba", ob1));
+        assertFalse(palindrome.isPalindrome("aa", ob1));
 
+    }
+    @Test
+    public void testIsPalindromeOffByFive() {
         // test isPalindrome with CharacterComparator offBy5
 
         CharacterComparator offBy5 = new OffByN(5);
         assertTrue(palindrome.isPalindrome("toto", offBy5));
-
+        assertTrue(palindrome.isPalindrome("", offBy5));
 
     }
 }
